@@ -3,10 +3,23 @@ import Card from "../Card";
 
 import s from "./List.module.css";
 
-const List: FC = () => {
+interface IListItem {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const List: FC = ({ list }) => {
   return (
     <div className={s.root}>
-      <Card title="denzel" email="example@email.com" />
+      {list &&
+        list.map((item: IListItem) => {
+          return (
+            <div key={item.id}>
+              <Card title={item.name} email={item.email} />
+            </div>
+          );
+        })}
     </div>
   );
 };
