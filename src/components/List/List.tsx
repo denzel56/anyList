@@ -5,18 +5,27 @@ import s from "./List.module.css";
 
 interface IListItem {
   id: number;
-  name: string;
+  avatar: string;
+  first_name: string;
   email: string;
 }
 
-const List: FC = ({ list }) => {
+interface IProps {
+  list: [];
+}
+
+const List: FC = ({ list }: IProps) => {
   return (
     <div className={s.root}>
       {list &&
         list.map((item: IListItem) => {
           return (
             <div key={item.id}>
-              <Card title={item.name} email={item.email} />
+              <Card
+                image={item.avatar}
+                name={item.first_name}
+                email={item.email}
+              />
             </div>
           );
         })}

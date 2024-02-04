@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import List from "./components/List";
 
 import "./App.css";
 
-const getContacts = async () => {
+const getContacts = async (page = 1) => {
   const items = await axios
-    .get("https://jsonplaceholder.typicode.com/users")
+    .get(`https://reqres.in/api/users?page=${page}`)
     .then((res) => {
       return res.data;
     })
@@ -18,17 +18,26 @@ const getContacts = async () => {
 function App() {
   const [contacts, setContacts] = useState([]);
   const [search, setSearch] = useState("");
+  const ref = useRef(null);
 
   useEffect(() => {
-    getContacts().then((res) => setContacts(res));
+    getContacts().then((res) => setContacts(res.data));
   }, []);
 
   useEffect(() => {
-    console.log(search);
+    !search && console.log(ref.current);
+    const filtered = contacts.filter((item) => {
+      return item.first_name.includes(search);
+    });
+
+    setContacts(filtered);
   }, [search]);
 
-  const handleChange = (e) => {
-    setSearch(e.target.value);
+  const handleChange = (e: ChangeEvent) => {
+    if (!search) {
+      ref.current = contacts;
+    }
+    !e.target.value ? setContacts(ref.current) : setSearch(e.target.value);
   };
 
   return (
