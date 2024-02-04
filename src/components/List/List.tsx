@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext } from "react";
 import Card from "../Card";
 import { ContactsContext } from "../Context/contactsContext";
 

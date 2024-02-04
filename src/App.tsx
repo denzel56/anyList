@@ -41,8 +41,6 @@ function App() {
   };
 
   const handleClickMore = () => {
-    let listPage = [];
-
     getContacts(2).then((res) => {
       setContacts((prevState) => {
         const newList = [...prevState, ...res.data];
