@@ -30,3 +30,7 @@
   cursor: pointer;
   background: url("./assets/heart-red.svg") center/cover no-repeat;
 }
+
+.redHeart {
+  background: url("./assets/heart-red.svg") center/cover no-repeat;
+}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ContactsContext } from "./components/Context/contactsContext.js";
 import List from "./components/List";
 
 import "./App.css";
@@ -25,7 +26,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    !search && console.log(ref.current);
     const filtered = contacts.filter((item) => {
       return item.first_name.includes(search);
     });
@@ -40,11 +40,29 @@ function App() {
     !e.target.value ? setContacts(ref.current) : setSearch(e.target.value);
   };
 
+  const handleClickMore = () => {
+    let listPage = [];
+
+    getContacts(2).then((res) => {
+      setContacts((prevState) => {
+        const newList = [...prevState, ...res.data];
+
+        return newList;
+      });
+    });
+  };
+
   return (
     <>
-      <h1>My contact list</h1>
-      <input type="text" placeholder="search..." onChange={handleChange} />
-      <List list={contacts} />
+      <ContactsContext.Provider value={[contacts, setContacts]}>
+        <h1>My contact list</h1>
+        <input type="text" placeholder="search..." onChange={handleChange} />
+        <List />
+
+        {contacts.length < 12 && (
+          <button onClick={handleClickMore}>Загрузить ещё</button>
+        )}
+      </ContactsContext.Provider>
     </>
   );
 }
